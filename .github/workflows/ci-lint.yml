@@ -1,0 +1,30 @@
+name: Lint
+run-name: ${{ github.actor }} is running linting
+on: [push, pull_request] # Run on push and pull request events
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      # Step 1: Checkout the repository
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      # Step 2: Setup Node.js environment
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "18" # Use Node.js version 18
+          cache: "npm" # Cache npm dependencies for faster installs
+
+      # Step 3: Install dependencies
+      - name: Install Dependencies
+        run: npm ci
+
+      # Step 4: Run Prettier to check formatting
+      - name: Run Prettier Check
+        run: npm run prettier:check
+
+      # Step 5: Run ESLint to check lint rules
+      - name: Run ESLint
+        run: npm run lint
